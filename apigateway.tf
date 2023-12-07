@@ -156,7 +156,6 @@ resource "aws_api_gateway_deployment" "deployment" {
 # // domain
 resource "aws_acm_certificate" "transcription_gateway_cert" {
   domain_name               = "api.sumeet.life"
-  provider                  = aws.aws_useast1
   subject_alternative_names = ["api.sumeet.life"] # Your custom domain
   validation_method         = "DNS"
 }
