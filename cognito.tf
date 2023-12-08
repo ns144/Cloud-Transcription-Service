@@ -20,7 +20,7 @@ resource "aws_cognito_user_pool_client" "client" {
 
   supported_identity_providers = ["COGNITO"]
 
-
+  callback_urls = ["https://example.com"]
 
   user_pool_id = aws_cognito_user_pool.api_user_pool.id
 
