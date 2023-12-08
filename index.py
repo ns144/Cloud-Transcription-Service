@@ -9,4 +9,4 @@ def lambda_handler(event, context):
     body = event['body']
     response += str(body)
 
-    return { 'statuscode' : 200, 'body' : json.dumps(response)}
+    return { 'statusCode' : 200, 'body' : json.dumps(response)}
