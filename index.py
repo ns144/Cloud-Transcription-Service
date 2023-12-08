@@ -5,6 +5,7 @@ def lambda_handler(event, context):
     response = 'Hello Lambda'
 
     if 'queryStringParameters' in event:
+        print(event)
         query_parameters = event['queryStringParameters']
         
         # Access 'username' and 'password' from query parameters
