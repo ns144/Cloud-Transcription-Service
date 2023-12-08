@@ -7,6 +7,6 @@ def lambda_handler(event, context):
     print('## EVENT')
     print(event)
     body = event['body']
-    response += body
+    response += str(body)
 
     return { 'statuscode' : 200, 'body' : json.dumps(response)}
