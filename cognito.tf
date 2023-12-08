@@ -28,7 +28,7 @@ resource "aws_cognito_user_pool_client" "client" {
 
 resource "aws_cognito_user" "api_user" {
 
-  user_pool_id = aws_cognito_user_pool.pool.id
+  user_pool_id = aws_cognito_user_pool.api_user_pool.id
 
   username = "aws-gateway"
 
