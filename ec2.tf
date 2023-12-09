@@ -48,7 +48,7 @@ resource "aws_instance" "transcription_server" {
               sudo tee /etc/nginx/sites-available/fastapi_nginx <<CONFIG
               server {
                 listen 80;
-                server_name 3.87.220.60;
+                server_name 3.76.212.120;
                 location / {
                     proxy_pass http://127.0.0.1:8000;
                 }
