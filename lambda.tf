@@ -28,6 +28,7 @@ resource "aws_lambda_function" "start_lambda" {
     }
   }
 
+  timeout = 60
 }
 
 output "instance_id" {
