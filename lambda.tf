@@ -22,6 +22,14 @@ resource "aws_lambda_function" "start_lambda" {
 
   source_code_hash = data.archive_file.lambda_package.output_base64sha256
 
+  environment = {
+    INSTANCE_ID = aws_instance.transcription_server.id
+  }
+
+}
+
+output "instance_id" {
+  value = aws_instance.transcription_server.id
 }
 
 resource "aws_iam_role" "lambda_role" {
@@ -56,9 +64,26 @@ resource "aws_iam_role" "lambda_role" {
 
 }
 
-resource "aws_iam_role_policy_attachment" "lambda_basic" {
+resource "aws_iam_policy" "lambda_policy" {
+  name        = "lambda_policy"
+  description = "Policy for Lambda function to start EC2 instance"
 
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [{
+      Effect = "Allow",
+      Action = [
+        "ec2:StartInstances"
+      ],
+      Resource = ["arn:aws:ec2:*:*:instance/*"]
+    }]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "lambda_basic" {
+  
+  policy_arn = aws_iam_policy.lambda_policy.arn
+  #policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
 
   role = aws_iam_role.lambda_role.name
 
@@ -75,8 +100,6 @@ resource "aws_lambda_permission" "apigw_lambda" {
   function_name = aws_lambda_function.start_lambda.function_name
 
   principal = "apigateway.amazonaws.com"
-
-
 
   source_arn = "${aws_api_gateway_rest_api.transcription_gateway.execution_arn}/*/*/*"
 
