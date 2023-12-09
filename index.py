@@ -9,7 +9,7 @@ def lambda_handler(event, context):
     print('## EVENT')
     print(event)
     body = json.loads(event['body'])
-    response += body
+    response += str(body)
 
     instance_id = os.environ['INSTANCE_ID']
     ec2 = boto3.client('ec2')
