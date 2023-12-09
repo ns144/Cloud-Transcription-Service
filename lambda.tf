@@ -83,12 +83,17 @@ resource "aws_iam_policy" "lambda_policy" {
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_basic" {
-  
-  policy_arn = aws_iam_policy.lambda_policy.arn
+  #policy_arn = "arn:aws:iam::aws:policy/"
+  #policy_arn = aws_iam_policy.lambda_policy.arn
   #policy_arn = "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  
+  for_each = toset([
+    "arn:aws:iam::aws:policy/AmazonEC2FullAccess", 
+    "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+  ])
 
   role = aws_iam_role.lambda_role.name
-
+  policy_arn = each.value
 }
 
 
