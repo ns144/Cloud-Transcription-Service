@@ -8,7 +8,8 @@ def lambda_handler(event, context):
 
     print('## EVENT')
     print(event)
-    body = json.loads(event['body'])
+    body = event['body']
+    #body = json.loads(body)
     response += str(body)
 
     instance_id = os.environ['INSTANCE_ID']
