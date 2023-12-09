@@ -17,3 +17,8 @@ resource "aws_instance" "transcription_server" {
   }
 
 }
+
+resource "aws_ec2_instance_state" "state_stopped" {
+  instance_id = aws_instance.transcription_server.id
+  state       = "stopped"
+}
