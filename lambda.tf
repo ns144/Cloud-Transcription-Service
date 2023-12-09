@@ -22,7 +22,7 @@ resource "aws_lambda_function" "start_lambda" {
 
   source_code_hash = data.archive_file.lambda_package.output_base64sha256
 
-  environment = {
+  environment {
     variables = {
         INSTANCE_ID = aws_instance.transcription_server.id
     }
