@@ -48,7 +48,7 @@ resource "aws_instance" "transcription_server" {
               sudo tee /etc/nginx/sites-available/fastapi_nginx <<CONFIG
               server {
                 listen 80;
-                server_name 3.76.212.120;
+                server_name 3.87.220.60;
                 location / {
                     proxy_pass http://127.0.0.1:8000;
                 }
@@ -78,7 +78,7 @@ resource "aws_instance" "transcription_server" {
   }
   # Security Group allowing traffic from everywhere (0.0.0.0/0)
   vpc_security_group_ids = [aws_security_group.allow_all.id]
-
+  key_name = "ssh_access"
 }
 
 resource "aws_security_group" "allow_all" {
@@ -92,6 +92,13 @@ resource "aws_security_group" "allow_all" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port = 22
+    to_port   = 22
+    protocol  = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -99,6 +106,17 @@ resource "aws_security_group" "allow_all" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+#resource "aws_key_pair" "ssh_access" {
+#  key_name   = "ssh-key"
+#  public_key = tls_private_key.rsa_4096_key.public_key_openssh
+#}
+#
+## RSA key of size 4096 bits
+#resource "tls_private_key" "rsa_4096_key" {
+#  algorithm = "RSA"
+#  rsa_bits  = 4096
+#}
 
 resource "aws_ec2_instance_state" "state_stopped" {
   instance_id = aws_instance.transcription_server.id
