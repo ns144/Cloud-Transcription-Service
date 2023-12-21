@@ -46,3 +46,5 @@ sudo service nginx restart
 
 python3 -m uvicorn main:app --reload
 echo "App started"
+
+#shutdown -h now
