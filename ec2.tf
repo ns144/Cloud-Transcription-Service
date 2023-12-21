@@ -1,6 +1,6 @@
 # IAM Role for EC2 instance
-resource "aws_iam_role" "ec2_s3_role" {
-  name = "ec2_s3_role"
+resource "aws_iam_role" "access_s3" {
+  name = "access_s3_role"
   
   assume_role_policy = <<EOF
 {
@@ -20,8 +20,14 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "s3_access" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  role       = aws_iam_role.ec2_s3_role.name
+  role = aws_iam_role.access_s3.name
 }
+
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_s3_profile"
+  role = aws_iam_role.access_s3.name
+}
+
 
 
 resource "aws_instance" "transcription_server" {
@@ -47,7 +53,7 @@ resource "aws_instance" "transcription_server" {
   key_name = "ssh_access"
 
   # IAM Role for S3 access
-  iam_instance_profile = aws_iam_role.ec2_s3_role.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 }
 
 resource "aws_security_group" "allow_all" {
