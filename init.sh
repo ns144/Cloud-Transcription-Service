@@ -51,7 +51,10 @@ sudo cat /etc/nginx/sites-enabled/fastapi_nginx
 
 # Configure Startup Script
 sudo cat >/home/ubuntu/startup.sh <<EOL
+#!/bin/bash
+
 log_file="/var/log/startup.log"
+target_dir="/home/ubuntu/whispercpp-fastapi"
 
 exec > >(tee -a "\$log_file") 2>&1
 
@@ -74,6 +77,8 @@ NGINX_CONF
 sudo cat /etc/nginx/sites-enabled/fastapi_nginx
 
 sudo service nginx restart
+cd "\$target_dir"
+
 python3 -m uvicorn main:app --reload
 EOL
 sudo cat /home/ubuntu/startup.sh
@@ -82,22 +87,10 @@ sudo cat /home/ubuntu/startup.sh
 sudo chmod +x /home/ubuntu/startup.sh
 
 # Autostart
-sudo cat >/etc/rc.d/rc.local <<EOL
-#!/bin/bash
-
-exec 1>/tmp/rc.local.log 2>&1
-set -x
-touch /var/lock/subsys/local
-sh /home/ec2-user/startup.sh
-
-exit 0
+sudo cat >/etc/cron.d/startup_script <<EOL
+@reboot root /home/ubuntu/startup.sh
 EOL
-sudo cat /etc/rc.d/rc.local
-# Enable Autostart
-sudo chmod +x /etc/rc.d/rc.local
-
-# Create Logfile for Autostart
-sudo touch /tmp/rc.local.log
+sudo cat /etc/cron.d/startup_script
 
 # Restart Nginx to apply changes
 sudo service nginx restart
