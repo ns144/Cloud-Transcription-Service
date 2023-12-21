@@ -1,7 +1,8 @@
-#cloud-boothook
-#!/bin/bash
 #cloud-config
 output: {all: '| tee -a /var/log/cloud-init-output.log'}
+
+#cloud-boothook
+#!/bin/bash
 
 # Set the repository URL and target directory
 repo_url="https://github.com/hyqshr/whispercpp-fastapi.git"
