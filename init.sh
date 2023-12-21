@@ -1,5 +1,7 @@
 #cloud-boothook
 #!/bin/bash
+#cloud-config
+output: {all: '| tee -a /var/log/cloud-init-output.log'}
 
 # Set the repository URL and target directory
 repo_url="https://github.com/hyqshr/whispercpp-fastapi.git"
@@ -49,5 +51,3 @@ sudo service nginx restart
 
 python3 -m uvicorn main:app --reload
 echo "App started"
-
-#shutdown -h now
