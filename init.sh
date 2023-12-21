@@ -22,10 +22,13 @@ cd "$target_dir"
 fi
 
 # Install requirements
+sudo apt-get update -y
+sudo apt-get upgrade -y
+
 sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
 pip install -r requirements.txt
-sudo apt install nginx
+sudo apt install -y nginx
 
 public_ip=$(curl http://checkip.amazonaws.com)
 
