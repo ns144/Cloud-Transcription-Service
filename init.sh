@@ -1,4 +1,3 @@
-#cloud-boothook
 #!/bin/bash
 
 # Set the repository URL and target directory
