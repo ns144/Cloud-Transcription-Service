@@ -8,7 +8,7 @@ resource "aws_instance" "transcription_server" {
   associate_public_ip_address = true
 
   # Should make shure that ec2 is not running initially
-  user_data = user_data = "${file("init.sh")}"  
+  user_data = "${file("init.sh")}"  
 
   tags = {
 
