@@ -1,12 +1,12 @@
-#cloud-config
-output: {all: '| tee -a /var/log/cloud-init-output.log'}
-
 #cloud-boothook
 #!/bin/bash
 
 # Set the repository URL and target directory
 repo_url="https://github.com/hyqshr/whispercpp-fastapi.git"
 target_dir="/home/ubuntu/whispercpp-fastapi"
+log_file="/var/log/whispercpp-fastapi.log"
+
+exec > >(tee -a "$log_file") 2>&1
 
 # Check if the target directory exists and is a Git repository
 if [ -d "$target_dir/.git" ]; then
