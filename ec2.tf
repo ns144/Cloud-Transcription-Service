@@ -57,7 +57,7 @@ resource "aws_security_group" "allow_all" {
 #  rsa_bits  = 4096
 #}
 
-resource "aws_ec2_instance_state" "state_stopped" {
-  instance_id = aws_instance.transcription_server.id
-  state       = "stopped"
-}
+#resource "aws_ec2_instance_state" "state_stopped" {
+#  instance_id = aws_instance.transcription_server.id
+#  state       = "stopped"
+#}
