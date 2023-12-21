@@ -9,6 +9,7 @@ resource "aws_instance" "transcription_server" {
 
   # Should make shure that ec2 is not running initially
   user_data = "${file("init.sh")}"  
+  user_data_replace_on_change = true
 
   tags = {
 

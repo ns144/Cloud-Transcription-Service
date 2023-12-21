@@ -1,3 +1,6 @@
+#cloud-boothook
+#!/bin/bash
+
 # Set the repository URL and target directory
 repo_url="https://github.com/hyqshr/whispercpp-fastapi.git"
 target_dir="/home/ubuntu/whispercpp-fastapi"
