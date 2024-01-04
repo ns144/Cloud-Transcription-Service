@@ -48,11 +48,12 @@ resource "aws_s3_bucket_policy" "transcript-bucket-policy" {
 EOF
 }
 
-resource "aws_s3_bucket_cors_rule" "transcript-bucket-cors" {
-  bucket = aws_s3_bucket.transcript-bucket.bucket
-
-  allowed_headers = ["*"]
-  allowed_methods = ["PUT", "POST", "GET", "DELETE"]
-  allowed_origins = ["*"]
-  expose_headers  = ["ETag"]
+resource "aws_s3_bucket_cors_configuration" "transcript-bucket-cors" {
+  bucket = aws_s3_bucket.transcript-bucket.id
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["PUT", "POST", "GET", "DELETE"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+  }
 }

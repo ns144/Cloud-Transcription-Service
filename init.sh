@@ -95,5 +95,7 @@ sudo cat /etc/cron.d/startup_script
 # Restart Nginx to apply changes
 sudo service nginx restart
 
-python3 -m uvicorn main:app --reload
-echo "App started"
+sudo poweroff
+
+# python3 -m uvicorn main:app --reload
+# echo "App started"
