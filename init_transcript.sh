@@ -27,6 +27,8 @@ sudo apt-get upgrade -y
 
 sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
+pip install openai-whisper --no-cache-dir
+
 pip install -r requirements.txt
 
 sudo poweroff
