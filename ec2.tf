@@ -34,7 +34,7 @@ resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
   ami           = "ami-06dd92ecc74fdfb36"
 
-  instance_type = "g4dn.xlarge"
+  instance_type = "t2.micro"
 
   # Assign a public IP address
   associate_public_ip_address = true
