@@ -31,4 +31,28 @@ pip install openai-whisper --no-cache-dir
 
 pip install -r requirements.txt
 
+# Configure Startup Script
+sudo cat >/home/ubuntu/startup.sh <<EOL
+#!/bin/bash
+
+log_file="/var/log/startup.log"
+target_dir="/home/ubuntu/Transcription-Application"
+
+exec > >(tee -a "\$log_file") 2>&1
+
+cd "\$target_dir"
+
+sudo python3 main.py
+EOL
+sudo cat /home/ubuntu/startup.sh
+
+# Enable Startup Script
+sudo chmod +x /home/ubuntu/startup.sh
+
+# Autostart
+sudo cat >/etc/cron.d/startup_script <<EOL
+@reboot root /home/ubuntu/startup.sh
+EOL
+sudo cat /etc/cron.d/startup_script
+
 sudo poweroff
