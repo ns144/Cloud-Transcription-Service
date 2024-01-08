@@ -43,6 +43,8 @@ exec > >(tee -a "\$log_file") 2>&1
 cd "\$target_dir"
 
 sudo python3 main.py
+
+sudo poweroff
 EOL
 sudo cat /home/ubuntu/startup.sh
 
