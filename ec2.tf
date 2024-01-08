@@ -28,6 +28,32 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.access_s3.name
 }
 
+# Additional policy for accessing Secrets Manager
+resource "aws_iam_policy" "secrets_manager_policy" {
+  name        = "secrets_manager_policy"
+  description = "Policy for accessing AWS Secrets Manager"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "secrets_manager_access" {
+  policy_arn = aws_iam_policy.secrets_manager_policy.arn
+  role       = aws_iam_role.access_s3.name
+}
+
 
 
 resource "aws_instance" "transcription_server" {
