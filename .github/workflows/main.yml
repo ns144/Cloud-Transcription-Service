@@ -29,6 +29,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
           role-session-name: GitHub-OIDC-TERRAFORM
 
+      - name: Set API Key as Environment Variable
+        run: echo "TF_VAR_transcription_api_key=${{ secrets.TRANSCRIPTION_SERVICE_API_KEY }}" >> $GITHUB_ENV
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -52,7 +55,7 @@ jobs:
 
       - name: Terraform Plan
         id: plan
-        run: terraform plan -var TRANSCRIPTION_SERVICE_API_KEY="${{secrets.TRANSCRIPTION_SERVICE_API_KEY}}"  -no-color
+        run: terraform plan  -no-color
         if: github.event_name == 'pull_request'
         continue-on-error: true
 
