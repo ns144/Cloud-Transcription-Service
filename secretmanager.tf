@@ -1,3 +1,9 @@
+variable "TRANSCRIPTION_SERVICE_API_KEY" {
+  description = "TRANSCRIPTION_SERVICE_API_KEY"
+  type        = string
+  sensitive   = true
+}
+
 resource "aws_secretsmanager_secret" "transcription_service_api_key" {
  name = "transcription_service_api_key"
 }
