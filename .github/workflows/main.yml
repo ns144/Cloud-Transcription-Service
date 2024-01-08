@@ -11,7 +11,6 @@ permissions:
 env:
   TF_LOG: INFO
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  TF_VAR_TRANSCRIPTION_SERVICE_API_KEY: ${{ secrets.TRANSCRIPTION_SERVICE_API_KEY }}
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -45,6 +44,7 @@ jobs:
         env:
           AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
           AWS_BUCKET_KEY_NAME: ${{ secrets.AWS_BUCKET_KEY_NAME }}
+          TF_VAR_TRANSCRIPTION_SERVICE_API_KEY: ${{ secrets.TRANSCRIPTION_SERVICE_API_KEY }}
         run: terraform init -backend-config="bucket=${AWS_BUCKET_NAME}" -backend-config="key=${AWS_BUCKET_KEY_NAME}" -backend-config="region=${AWS_REGION}"
 
       - name: Terraform Validate
