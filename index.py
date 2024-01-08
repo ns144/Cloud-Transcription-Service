@@ -28,10 +28,10 @@ def lambda_handler(event, context):
         print(f"Instance started: {instance_id}")
         response_msg = f"Instance started: {instance_id}"
     elif current_state == 'running':
-        print(f"Stopping instance: {instance_id}")
-        ec2.stop_instances(InstanceIds=[instance_id])
-        print(f"Instance stopped: {instance_id}")
-        response_msg = f"Instance stopped: {instance_id}"
+        #print(f"Stopping instance: {instance_id}")
+        #ec2.stop_instances(InstanceIds=[instance_id])
+        #print(f"Instance stopped: {instance_id}")
+        response_msg = f"Instance already running: {instance_id}"
     else:
         print(f"Unsupported instance state: {current_state}")
         response_msg = f"Unsupported instance state: {instance_id}"
