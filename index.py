@@ -5,18 +5,29 @@ import os
 
 def lambda_handler(event, context):
     print('## EXECUTION OF LAMBDA')
-    response = 'Hello Lambda'
+    response = ''
 
     print('## EVENT')
     print(event)
-    body = event['body']
-    #body = json.loads(body)
-    response += str(event)
+    try:
+        body = event['body']
+        params = event['queryStringParameters']
+        key = params['key']
+    except:
+        response = "No API Key provided"
+        return { 'statusCode' : 401, 'body' : json.dumps(response)}
 
     instance_id = os.environ['INSTANCE_ID']
     secret = os.environ['SECRET']
     secret = base64.b64decode(secret)
     secret = json.loads(secret)
+    transcription_key = secret['TRANSCRIPTION_SERVICE_API_KEY']
+    
+    if key != transcription_key:
+        response = "Incorrect API Key provided"
+        return { 'statusCode' : 401, 'body' : json.dumps(response)}
+    
+    
     ec2 = boto3.client('ec2')
 
     # Check the current state of the instance
