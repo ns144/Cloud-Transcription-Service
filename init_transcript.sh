@@ -27,9 +27,14 @@ sudo apt-get upgrade -y
 
 sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
+
 pip install openai-whisper --no-cache-dir
 
-pip install -r requirements.txt
+pip install -qq -y https://github.com/pyannote/pyannote-audio/archive/refs/heads/develop.zip
+
+pip install -y --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+
+pip install -y -r requirements.txt
 
 # Configure Startup Script
 sudo cat >/home/ubuntu/startup.sh <<EOL
@@ -43,8 +48,6 @@ exec > >(tee -a "\$log_file") 2>&1
 cd "\$target_dir"
 
 sudo python3 main.py
-
-sudo poweroff
 EOL
 sudo cat /home/ubuntu/startup.sh
 
