@@ -46,7 +46,7 @@ resource "aws_api_gateway_method" "proxy" {
 
   #authorization = "COGNITO_USER_POOLS"
 
-  authorizer_id = aws_api_gateway_authorizer.api_auth.id
+  #authorizer_id = aws_api_gateway_authorizer.api_auth.id
 
 
 }
