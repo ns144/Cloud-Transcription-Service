@@ -83,7 +83,7 @@ resource "aws_instance" "transcription_server" {
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   root_block_device {
-    volume_size = 15  # New root volume size in GB
+    volume_size = 32  # New root volume size in GB
   }
 }
 

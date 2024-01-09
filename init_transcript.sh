@@ -30,11 +30,11 @@ sudo apt install -y ffmpeg
 
 pip install openai-whisper --no-cache-dir
 
-pip install -qq -y https://github.com/pyannote/pyannote-audio/archive/refs/heads/develop.zip
+pip install -qq https://github.com/pyannote/pyannote-audio/archive/refs/heads/develop.zip
 
 pip install -y --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-pip install -y -r requirements.txt
+pip install -r requirements.txt
 
 # Configure Startup Script
 sudo cat >/home/ubuntu/startup.sh <<EOL
