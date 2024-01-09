@@ -14,17 +14,17 @@ resource "aws_api_gateway_rest_api" "transcription_gateway" {
 
 }
 
-resource "aws_api_gateway_authorizer" "api_auth" {
-
-  name = "transcription_gatewayg_authorizer2"
-
-  rest_api_id = aws_api_gateway_rest_api.transcription_gateway.id
-
-  type = "COGNITO_USER_POOLS"
-
-  provider_arns = [aws_cognito_user_pool.api_user_pool.arn]
-
-}
+#resource "aws_api_gateway_authorizer" "api_auth" {
+#
+#  name = "transcription_gatewayg_authorizer2"
+#
+#  rest_api_id = aws_api_gateway_rest_api.transcription_gateway.id
+#
+#  type = "COGNITO_USER_POOLS"
+#
+#  provider_arns = [aws_cognito_user_pool.api_user_pool.arn]
+#
+#}
 
 resource "aws_api_gateway_resource" "root" {
 
@@ -43,10 +43,12 @@ resource "aws_api_gateway_method" "proxy" {
   resource_id = aws_api_gateway_resource.root.id
 
   http_method = "POST"
+  
+  authorization = "NONE"
 
-  authorization = "COGNITO_USER_POOLS"
+  #authorization = "COGNITO_USER_POOLS"
 
-  authorizer_id = aws_api_gateway_authorizer.api_auth.id
+  #authorizer_id = aws_api_gateway_authorizer.api_auth.id
 
 
 }

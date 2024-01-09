@@ -1,4 +1,5 @@
 import json
+import base64
 import boto3
 import os
 
@@ -10,9 +11,12 @@ def lambda_handler(event, context):
     print(event)
     body = event['body']
     #body = json.loads(body)
-    response += str(body)
+    response += str(event)
 
     instance_id = os.environ['INSTANCE_ID']
+    secret = os.environ['SECRET']
+    secret = base64.b64decode(secret)
+    secret = json.loads(secret)
     ec2 = boto3.client('ec2')
 
     # Check the current state of the instance
