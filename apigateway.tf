@@ -43,6 +43,8 @@ resource "aws_api_gateway_method" "proxy" {
   resource_id = aws_api_gateway_resource.root.id
 
   http_method = "POST"
+  
+  authorization = "NONE"
 
   #authorization = "COGNITO_USER_POOLS"
 
