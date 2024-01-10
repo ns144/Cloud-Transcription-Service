@@ -46,7 +46,7 @@ target_dir="/home/ubuntu/Transcription-Application"
 exec > >(tee -a "\$log_file") 2>&1
 
 cd "\$target_dir"
-
+sudo git pull
 sudo python3 main.py
 
 sudo poweroff
