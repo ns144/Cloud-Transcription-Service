@@ -58,8 +58,8 @@ resource "aws_iam_role_policy_attachment" "secrets_manager_access" {
 
 resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
-  ami           = "ami-06dd92ecc74fdfb36"
-
+#  ami           = "ami-06dd92ecc74fdfb36"
+  ami = "ami-05e329519be512f1b"
   #instance_type = "t2.micro"
   instance_type = "g4dn.xlarge"
 
