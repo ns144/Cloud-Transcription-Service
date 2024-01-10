@@ -30,7 +30,7 @@ sudo apt install -y ffmpeg
 
 pip install openai-whisper --no-cache-dir
 
-pip install -qq https://github.com/pyannote/pyannote-audio/archive/refs/heads/develop.zip
+pip install pyannote.audio
 
 pip install -y --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
@@ -48,6 +48,7 @@ exec > >(tee -a "\$log_file") 2>&1
 cd "\$target_dir"
 
 sudo python3 main.py
+
 EOL
 sudo cat /home/ubuntu/startup.sh
 
