@@ -42,7 +42,7 @@ resource "aws_api_gateway_method" "proxy" {
 
   resource_id = aws_api_gateway_resource.root.id
 
-  http_method = "POST"
+  http_method = "GET"
   
   authorization = "NONE"
 
@@ -63,7 +63,7 @@ resource "aws_api_gateway_integration" "lambda_integration" {
 
   http_method = aws_api_gateway_method.proxy.http_method
 
-  integration_http_method = "POST"
+  integration_http_method = "GET"
 
   type = "AWS_PROXY"
   uri = aws_lambda_function.start_lambda.invoke_arn
