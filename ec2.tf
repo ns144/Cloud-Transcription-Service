@@ -61,8 +61,8 @@ resource "aws_instance" "transcription_server" {
 #  ami           = "ami-06dd92ecc74fdfb36"
   # Nividia AMI
   #ami = "ami-0d5a2db5629a8fbcc"
-  # AWS PyTorch 2.0.1 AMI
-  ami = "ami-06d1f21ff7a15a773"
+  # Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 20.04)
+  ami = "ami-03ba146cfa4d5ec9f"
   #instance_type = "t2.micro"
   instance_type = "g4dn.xlarge"
 
