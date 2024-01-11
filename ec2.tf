@@ -59,7 +59,10 @@ resource "aws_iam_role_policy_attachment" "secrets_manager_access" {
 resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
 #  ami           = "ami-06dd92ecc74fdfb36"
-  ami = "ami-0d5a2db5629a8fbcc"
+  # Nividia AMI
+  #ami = "ami-0d5a2db5629a8fbcc"
+  # AWS PyTorch 2.0.1 AMI
+  ami = "ami-06d1f21ff7a15a773"
   #instance_type = "t2.micro"
   instance_type = "g4dn.xlarge"
 
