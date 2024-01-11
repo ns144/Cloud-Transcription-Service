@@ -25,14 +25,14 @@ fi
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-sudo apt-get install -y python3-pip
-sudo apt install -y ffmpeg
+sudo apt-get install python3-pip
+sudo apt install ffmpeg
 
 pip install openai-whisper --no-cache-dir
 
 pip install pyannote.audio
 
-pip install -y --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 pip install -r requirements.txt
 
