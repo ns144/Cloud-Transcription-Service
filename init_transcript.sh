@@ -32,7 +32,7 @@ pip install openai-whisper --no-cache-dir
 
 pip install pyannote.audio
 
-#pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
 
 pip install -r requirements.txt
 
