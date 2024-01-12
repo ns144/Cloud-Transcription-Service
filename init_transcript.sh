@@ -25,8 +25,8 @@ fi
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
-sudo apt-get install python3-pip
-sudo apt install ffmpeg
+sudo apt-get install -y python3-pip
+sudo apt install -y ffmpeg
 
 pip install openai-whisper --no-cache-dir
 
