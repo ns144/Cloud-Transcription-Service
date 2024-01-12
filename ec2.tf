@@ -85,9 +85,9 @@ resource "aws_instance" "transcription_server" {
   # IAM Role for S3 access
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
-  root_block_device {
-    volume_size = 128  # New root volume size in GB
-  }
+  #root_block_device {
+  #  volume_size = 128  # New root volume size in GB
+  #}
 }
 
 resource "aws_security_group" "allow_all" {
