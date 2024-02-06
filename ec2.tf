@@ -63,8 +63,8 @@ resource "aws_instance" "transcription_server" {
   ami = "ami-0d5a2db5629a8fbcc"
   # Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 20.04)
   #ami = "ami-03ba146cfa4d5ec9f"
-  #instance_type = "t2.micro"
-  instance_type = "g4dn.xlarge"
+  instance_type = "g5.xlarge"
+  #instance_type = "g4dn.xlarge"
 
   # Assign a public IP address
   associate_public_ip_address = true
