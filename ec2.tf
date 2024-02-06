@@ -60,9 +60,9 @@ resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
 #  ami           = "ami-06dd92ecc74fdfb36"
   # Nividia AMI
-  ami = "ami-0d5a2db5629a8fbcc"
+  #ami = "ami-0d5a2db5629a8fbcc"
   # Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 20.04)
-  #ami = "ami-03ba146cfa4d5ec9f"
+  ami = "ami-0c650d5ec9c783d4b"
   instance_type = "g4dn.xlarge"
 
   # Assign a public IP address
