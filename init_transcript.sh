@@ -29,7 +29,8 @@ sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
 
 pip install openai-whisper --no-cache-dir
-
+pip install faster-whisper
+pip install git+https://github.com/jiaaro/pydub.git@master
 pip install pyannote.audio
 
 pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
@@ -49,6 +50,7 @@ cd "\$target_dir"
 sudo git pull
 sudo python3 main.py
 
+sudo poweroff
 EOL
 sudo cat /home/ubuntu/startup.sh
 
