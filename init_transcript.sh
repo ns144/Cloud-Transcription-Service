@@ -50,6 +50,8 @@ cd "\$target_dir"
 sudo git pull
 sudo python3 main.py
 
+sudo poweroff -f
+
 EOL
 sudo cat /home/ubuntu/startup.sh
 
