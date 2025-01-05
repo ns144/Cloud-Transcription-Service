@@ -55,7 +55,7 @@ resource "aws_api_gateway_method" "stop_proxy" {
 
 
 
-resource "aws_api_gateway_integration" "lambda_integration" {
+resource "aws_api_gateway_integration" "stop_lambda_integration" {
 
   rest_api_id = aws_api_gateway_rest_api.stop_ec2_gateway.id
 
@@ -122,9 +122,9 @@ resource "aws_api_gateway_integration_response" "stop_proxy" {
 
   depends_on = [
 
-    aws_api_gateway_method.proxy,
+    aws_api_gateway_method.stop_proxy,
 
-    aws_api_gateway_integration.lambda_integration
+    aws_api_gateway_integration.stop_lambda_integration
 
   ]
 
@@ -132,8 +132,7 @@ resource "aws_api_gateway_integration_response" "stop_proxy" {
 
 resource "aws_api_gateway_deployment" "stop_deployment" {
   depends_on = [
-    aws_api_gateway_integration.lambda_integration,
-    aws_api_gateway_integration.options_integration,
+    aws_api_gateway_integration.stop_lambda_integration,
   ]
 
   rest_api_id = aws_api_gateway_rest_api.stop_ec2_gateway.id
