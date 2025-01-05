@@ -32,11 +32,14 @@ def lambda_handler(event, context):
     
     ec2 = boto3.client('ec2')
 
-    # Check the current state of the instance
-    instance = ec2.describe_instances(InstanceIds=[instance_id])['Reservations'][0]['Instances'][0]
-    current_state = instance['State']['Name']
-
     response_msg = ""
+    # Check the current state of the instance
+    try:
+        instance = ec2.describe_instances(InstanceIds=[instance_id])['Reservations'][0]['Instances'][0]
+        current_state = instance['State']['Name']
+    except Exception as error:
+        response_msg = f"Invalid Instance ID: {instance_id}"
+        return { 'statusCode' : 401, 'body' : json.dumps(response_msg)}
 
     # Start or stop the instance based on its current state
     if current_state == 'running':

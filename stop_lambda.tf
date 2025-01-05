@@ -2,7 +2,7 @@ data "archive_file" "lambda_stop_package" {
 
   type = "zip"
 
-  source_file = "stop.py"
+  source_file = "stop_lambda/index.py"
 
   output_path = "stop.zip"
 
