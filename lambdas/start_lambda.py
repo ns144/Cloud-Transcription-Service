@@ -28,8 +28,7 @@ def lambda_handler(event, context):
     logging_triggering_transcript_id = params.get(
         'logging_triggering_transcript_id')
 
-    logger.info(f"Started by {logging_triggering_user_id}.{
-                logging_triggering_transcript_id}")
+    logger.info(f"Started by {logging_triggering_user_id}.{logging_triggering_transcript_id}")
 
     logger.info(f"Total duration: {total_duration}")
     logger.info(f"Total files: {total_files}")
