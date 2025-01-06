@@ -33,7 +33,11 @@ pip install faster-whisper
 pip install git+https://github.com/jiaaro/pydub.git@master
 pip install pyannote.audio
 
-pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+#pip install --no-cache-dir torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu121
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu124
+
+# Install WhisperV3
+pip install --upgrade transformers datasets[audio] accelerate
 
 pip install -r requirements.txt
 
