@@ -51,7 +51,7 @@ sudo tee /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json > /de
             "files": {
                 "collect_list": [
                     {
-                        "file_path": "/var/log/Transcription-Application.log",
+                        "file_path": "/var/log/Python-Transcription-Application.log",
                         "log_group_name": "transcription-server_ec2",
                         "log_stream_name": "{instance_id}",
                         "timestamp_format": "%Y-%m-%d %H:%M:%S"
