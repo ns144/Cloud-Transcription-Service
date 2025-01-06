@@ -29,7 +29,7 @@ sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
 
 pip install openai-whisper --no-cache-dir
-pip install faster-whisper
+#pip install faster-whisper
 pip install git+https://github.com/jiaaro/pydub.git@master
 pip install pyannote.audio
 
@@ -65,3 +65,4 @@ sudo cat >/etc/cron.d/startup_script <<EOL
 @reboot root /home/ubuntu/startup.sh
 EOL
 sudo cat /etc/cron.d/startup_script
+sudo poweroff
