@@ -1,6 +1,6 @@
 # IAM Role for EC2 instance
-resource "aws_iam_role" "access_s3" {
-  name = "access_s3_role"
+resource "aws_iam_role" "access_s3_and_logs" {
+  name = "access_s3_and_logs_role"
   
   assume_role_policy = <<EOF
 {
@@ -18,14 +18,10 @@ resource "aws_iam_role" "access_s3" {
 EOF
 }
 
+# Attach AmazonS3FullAccess policy to the role
 resource "aws_iam_role_policy_attachment" "s3_access" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
-  role = aws_iam_role.access_s3.name
-}
-
-resource "aws_iam_instance_profile" "ec2_profile" {
-  name = "ec2_s3_profile"
-  role = aws_iam_role.access_s3.name
+  role       = aws_iam_role.access_s3_and_logs.name
 }
 
 # Additional policy for accessing Secrets Manager
@@ -51,10 +47,42 @@ EOF
 
 resource "aws_iam_role_policy_attachment" "secrets_manager_access" {
   policy_arn = aws_iam_policy.secrets_manager_policy.arn
-  role       = aws_iam_role.access_s3.name
+  role       = aws_iam_role.access_s3_and_logs.name
 }
 
+# Policy for CloudWatch Logs
+resource "aws_iam_policy" "cloudwatch_logs_policy" {
+  name        = "cloudwatch_logs_policy"
+  description = "Policy for EC2 to write logs to CloudWatch"
 
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents"
+      ],
+      "Resource": "arn:aws:logs:*:*:*"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "cloudwatch_logs_access" {
+  policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
+  role       = aws_iam_role.access_s3_and_logs.name
+}
+
+# IAM Instance Profile for the EC2 instance
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_s3_and_logs_profile"
+  role = aws_iam_role.access_s3_and_logs.name
+}
 
 resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
@@ -85,7 +113,7 @@ resource "aws_instance" "transcription_server" {
   vpc_security_group_ids = [aws_security_group.allow_all.id]
   key_name = "ssh_access"
 
-  # IAM Role for S3 access
+  # IAM Instance Profile for CloudWatch Logs and S3
   iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   #root_block_device {

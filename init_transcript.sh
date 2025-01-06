@@ -27,6 +27,7 @@ sudo apt-get upgrade -y
 
 sudo apt-get install -y python3-pip
 sudo apt install -y ffmpeg
+sudo apt-get install amazon-cloudwatch-agent -y
 
 pip install openai-whisper --no-cache-dir
 #pip install faster-whisper
@@ -40,6 +41,34 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 pip install --upgrade transformers datasets[audio] accelerate
 
 pip install -r requirements.txt
+
+# Create Amazon CloudWatch Agent config file
+sudo mkdir -p /opt/aws/amazon-cloudwatch-agent/bin/
+sudo tee /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json > /dev/null <<EOL
+{
+    "logs": {
+        "logs_collected": {
+            "files": {
+                "collect_list": [
+                    {
+                        "file_path": "/var/log/Transcription-Application.log",
+                        "log_group_name": "transcription-server_ec2",
+                        "log_stream_name": "{instance_id}",
+                        "timestamp_format": "%Y-%m-%d %H:%M:%S"
+                    }
+                ]
+            }
+        }
+    }
+}
+EOL
+
+# Start Amazon CloudWatch Agent
+sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+    -a fetch-config \
+    -m ec2 \
+    -c file:/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json \
+    -s
 
 # Configure Startup Script
 sudo cat >/home/ubuntu/startup.sh <<EOL

@@ -5,20 +5,23 @@ import os
 import time
 import logging
 
+# Create logger
 logger = logging.getLogger()
 logger.setLevel("INFO")
+
+# Custom logging format to only print log level and message
+handler = logging.StreamHandler()
+formatter = logging.Formatter('[%(levelname)s] %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 def lambda_handler(event, context):
     response = ''
-
-    print('## EVENT')
-    print(event)
     try:
         params = event['queryStringParameters']
         key = params['key']
     except:
-        logger.warning("Lambda called without API Key")
         response = "No API Key provided"
         return {'statusCode': 401, 'body': json.dumps(response)}
 
@@ -54,17 +57,17 @@ def lambda_handler(event, context):
 
     # Start or stop the instance based on its current state
     if current_state == 'stopped':
-        print(f"Starting instance: {instance_id}")
+        logger.info(f"Starting instance: {instance_id}")
         ec2.start_instances(InstanceIds=[instance_id])
-        print(f"Instance started: {instance_id}")
+        logger.info(f"Instance started: {instance_id}")
         response_msg = f"Instance started: {instance_id}"
     elif current_state == 'running':
-        # print(f"Stopping instance: {instance_id}")
+        # logger.info(f"Stopping instance: {instance_id}")
         # ec2.stop_instances(InstanceIds=[instance_id])
-        # print(f"Instance stopped: {instance_id}")
+        # logger.info(f"Instance stopped: {instance_id}")
         response_msg = f"Instance already running: {instance_id}"
     else:
-        print(f"Unsupported instance state: {current_state}")
+        logger.warning(f"Unsupported instance state: {current_state}")
         # This happens at the startup and shutdown of an Instance
         unsupported = True
         while unsupported:
@@ -74,18 +77,18 @@ def lambda_handler(event, context):
                 'Reservations'][0]['Instances'][0]
             current_state = instance['State']['Name']
             if current_state == 'stopped':
-                print(f"Starting instance: {instance_id}")
+                logger.info(f"Starting instance: {instance_id}")
                 ec2.start_instances(InstanceIds=[instance_id])
-                print(f"Instance started: {instance_id}")
+                logger.info(f"Instance started: {instance_id}")
                 response_msg = f"Instance started: {instance_id}"
                 break
             elif current_state == 'running':
                 response_msg = f"Instance already running: {instance_id}"
                 break
             else:
-                print("Unsupported instance state. Trying again")
+                logger.warning("Unsupported instance state. Trying again")
 
-    print(f"Current instance state: {current_state}")
+    logger.info(f"Current instance state: {current_state}")
 
     response += response_msg
 
