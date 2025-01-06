@@ -2,21 +2,21 @@ data "archive_file" "lambda_stop_package" {
 
   type = "zip"
 
-  source_file = "stop_lambda/index.py"
+  source_file = "lambdas/stop_lambda.py"
 
-  output_path = "stop.zip"
+  output_path = "stop_lambda.zip"
 
 }
 
 resource "aws_lambda_function" "stop_lambda" {
 
-  filename = "stop.zip"
+  filename = "stop_lambda.zip"
 
   function_name = "stopEC2Function"
 
   role = aws_iam_role.lambda_role.arn
 
-  handler = "index.lambda_handler"
+  handler = "stop_lambda.lambda_handler"
 
   runtime = "python3.10"
 
