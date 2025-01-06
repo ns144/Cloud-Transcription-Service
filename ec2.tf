@@ -60,7 +60,10 @@ resource "aws_instance" "transcription_server" {
 # AMI Ubuntu Server 22.04 LTS X86 
 #  ami           = "ami-06dd92ecc74fdfb36"
   # Nividia AMI
-  ami = "ami-0d5a2db5629a8fbcc"
+  #ami = "ami-0d5a2db5629a8fbcc"
+  
+  #Ubuntu Pytorch AMI
+  ami = "ami-0fa5e5fd27b3e163a"
   # Deep Learning Base OSS Nvidia Driver GPU AMI (Ubuntu 20.04)
   #ami = "ami-0c650d5ec9c783d4b"
   #ami = "ami-0e33bf2e5ba14b3fb"
