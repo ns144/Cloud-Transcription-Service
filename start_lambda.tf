@@ -2,21 +2,21 @@ data "archive_file" "lambda_package" {
 
   type = "zip"
 
-  source_file = "index.py"
+  source_file = "lambdas/start_lambda.py"
 
-  output_path = "index.zip"
+  output_path = "start_lambda.zip"
 
 }
 
 resource "aws_lambda_function" "start_lambda" {
 
-  filename = "index.zip"
+  filename = "start_lambda.zip"
 
   function_name = "startTranscriptionFunction"
 
   role = aws_iam_role.lambda_role.arn
 
-  handler = "index.lambda_handler"
+  handler = "start_lambda.lambda_handler"
 
   runtime = "python3.10"
 
