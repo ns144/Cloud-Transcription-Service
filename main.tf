@@ -7,22 +7,27 @@ resource "aws_s3_bucket" "transcript-bucket" {
   }
 }
 
-resource "aws_iam_user" "s3_user" {
-  name = "s3-access-user"
+resource "aws_iam_user" "nextjs_user" {
+  name = "nextjs-access-user"
 }
 
-resource "aws_iam_group" "s3_access_group" {
-  name = "s3-access-group"
+resource "aws_iam_group" "nextjs_access_group" {
+  name = "nextjs-access-group"
 }
 
 resource "aws_iam_group_policy_attachment" "s3_access_attachment" {
-  group      = aws_iam_group.s3_access_group.name
+  group      = aws_iam_group.nextjs_access_group.name
   policy_arn = "arn:aws:iam::aws:policy/AmazonS3FullAccess"
 }
 
-resource "aws_iam_user_group_membership" "s3_user_membership" {
-  user  = aws_iam_user.s3_user.name
-  groups = [aws_iam_group.s3_access_group.name]
+resource "aws_iam_group_policy_attachment" "cloudwatch_access_attachment" {
+  group      = aws_iam_group.nextjs_access_group.name
+  policy_arn = "arn:aws:iam::aws:policy/CloudWatchFullAccess"
+}
+
+resource "aws_iam_user_group_membership" "nextjs_user_membership" {
+  user   = aws_iam_user.nextjs_user.name
+  groups = [aws_iam_group.nextjs_access_group.name]
 }
 
 resource "aws_s3_bucket_policy" "transcript-bucket-policy" {
@@ -35,7 +40,7 @@ resource "aws_s3_bucket_policy" "transcript-bucket-policy" {
     {
       "Effect": "Allow",
       "Principal": {
-        "AWS": "${aws_iam_user.s3_user.arn}"
+        "AWS": "${aws_iam_user.nextjs_user.arn}"
       },
       "Action": "s3:*",
       "Resource": [
