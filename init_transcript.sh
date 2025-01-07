@@ -54,14 +54,33 @@ sudo tee /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json > /de
                         "file_path": "/var/log/Python-Transcription-Application.log",
                         "log_group_name": "transcription-server_ec2",
                         "log_stream_name": "{instance_id}",
-                        "timestamp_format": "%Y-%m-%d %H:%M:%S"
+                        "timestamp_format": "%Y-%m-%d %H:%M:%S",
+                        "log_stream_buffer_duration": 5
                     }
                 ]
+            }
+        }
+    },
+    "metrics": {
+        "metrics_collected": {
+            "nvidia_gpu": {
+                "measurement": [
+                    "utilization.gpu",
+                    "utilization.memory",
+                    "memory.total",
+                    "memory.used",
+                    "memory.free",
+                    "clocks.current.graphics",
+                    "clocks.current.sm",
+                    "clocks.current.memory"
+                ],
+                "metrics_collection_interval": 10
             }
         }
     }
 }
 EOL
+
 
 # Start Amazon CloudWatch Agent
 sudo /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \

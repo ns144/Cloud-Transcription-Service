@@ -53,7 +53,7 @@ resource "aws_iam_role_policy_attachment" "secrets_manager_access" {
 # Policy for CloudWatch Logs
 resource "aws_iam_policy" "cloudwatch_logs_policy" {
   name        = "cloudwatch_logs_policy"
-  description = "Policy for EC2 to write logs to CloudWatch"
+  description = "Policy for EC2 to write logs and metrics to CloudWatch"
 
   policy = <<EOF
 {
@@ -64,14 +64,26 @@ resource "aws_iam_policy" "cloudwatch_logs_policy" {
       "Action": [
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
-        "logs:PutLogEvents"
+        "logs:PutLogEvents",
+        "logs:CreateLogDelivery",
+        "logs:UpdateLogDelivery"
       ],
       "Resource": "arn:aws:logs:*:*:*"
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricStream",
+        "cloudwatch:PutMetricData",
+        "cloudwatch:ListMetrics"
+      ],
+      "Resource": "*"
     }
   ]
 }
 EOF
 }
+
 
 resource "aws_iam_role_policy_attachment" "cloudwatch_logs_access" {
   policy_arn = aws_iam_policy.cloudwatch_logs_policy.arn
