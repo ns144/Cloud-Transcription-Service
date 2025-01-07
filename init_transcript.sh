@@ -65,14 +65,14 @@ sudo tee /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json > /de
         "metrics_collected": {
             "nvidia_gpu": {
                 "measurement": [
-                    "utilization.gpu",
-                    "utilization.memory",
-                    "memory.total",
-                    "memory.used",
-                    "memory.free",
-                    "clocks.current.graphics",
-                    "clocks.current.sm",
-                    "clocks.current.memory"
+                    "utilization_gpu",
+                    "utilization_memory",
+                    "memory_total",
+                    "memory_used",
+                    "memory_free",
+                    "clocks_current_graphics",
+                    "clocks_current_sm",
+                    "clocks_current_memory"
                 ],
                 "metrics_collection_interval": 10
             }
