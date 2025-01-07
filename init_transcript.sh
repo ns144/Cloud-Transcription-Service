@@ -61,6 +61,12 @@ sudo tee /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent.json > /de
                         "log_group_name": "ec2-init",
                         "log_stream_name": "{instance_id}",
                         "timestamp_format": "%Y-%m-%d %H:%M:%S"
+                    },
+                    {
+                        "file_path": "/var/log/startup.log",
+                        "log_group_name": "ec2-startup",
+                        "log_stream_name": "{instance_id}",
+                        "timestamp_format": "%Y-%m-%d %H:%M:%S"
                     }
                 ]
             }
