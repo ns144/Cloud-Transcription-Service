@@ -1,6 +1,5 @@
 resource "aws_autoscaling_group" "ton-texter-transcription-servers" {
     name = "ton-texter-transcription-servers"
-    availability_zones = ["eu-central-1"]
     desired_capacity   = 0
     max_size           = 5
     min_size           = 0
