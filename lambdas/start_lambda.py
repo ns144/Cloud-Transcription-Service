@@ -34,8 +34,8 @@ def lambda_handler(event, context):
         response = "Incorrect API Key provided"
         return {'statusCode': 401, 'body': json.dumps(response)}
 
-    total_duration = params.get('total_duration')
-    total_files = params.get('total_files')
+    total_duration = int(params.get('total_duration'))
+    total_files = int(params.get('total_files'))
     logging_triggering_user_id = params.get('logging_triggering_user_id')
     logging_triggering_transcript_id = params.get(
         'logging_triggering_transcript_id')
