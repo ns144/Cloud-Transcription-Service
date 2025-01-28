@@ -2,8 +2,9 @@ import json
 import base64
 import boto3
 import os
-import time
 import logging
+
+client = boto3.client('autoscaling')
 
 # Create logger
 logger = logging.getLogger()
@@ -17,12 +18,20 @@ logger.addHandler(handler)
 
 
 def lambda_handler(event, context):
-    response = ''
     try:
         params = event['queryStringParameters']
         key = params['key']
-    except:
+    except KeyError:
         response = "No API Key provided"
+        return {'statusCode': 401, 'body': json.dumps(response)}
+
+    secret = os.environ['SECRET']
+    secret = base64.b64decode(secret)
+    secret = json.loads(secret)
+    transcription_key = secret['TRANSCRIPTION_SERVICE_API_KEY']
+
+    if key != transcription_key:
+        response = "Incorrect API Key provided"
         return {'statusCode': 401, 'body': json.dumps(response)}
 
     total_duration = params.get('total_duration')
@@ -36,60 +45,27 @@ def lambda_handler(event, context):
     logger.info(f"Total duration: {total_duration}")
     logger.info(f"Total files: {total_files}")
 
-    instance_id = os.environ['INSTANCE_ID']
-    secret = os.environ['SECRET']
-    secret = base64.b64decode(secret)
-    secret = json.loads(secret)
-    transcription_key = secret['TRANSCRIPTION_SERVICE_API_KEY']
+    group = os.environ['ASG_NAME']
 
-    if key != transcription_key:
-        response = "Incorrect API Key provided"
-        return {'statusCode': 401, 'body': json.dumps(response)}
+    current_desired_capacity = get_current_desired_capacity(group)
 
-    ec2 = boto3.client('ec2')
-
-    # Check the current state of the instance
-    instance = ec2.describe_instances(InstanceIds=[instance_id])[
-        'Reservations'][0]['Instances'][0]
-    current_state = instance['State']['Name']
-
-    response_msg = ""
-
-    # Start or stop the instance based on its current state
-    if current_state == 'stopped':
-        logger.info(f"Starting instance: {instance_id}")
-        ec2.start_instances(InstanceIds=[instance_id])
-        logger.info(f"Instance started: {instance_id}")
-        response_msg = f"Instance started: {instance_id}"
-    elif current_state == 'running':
-        # logger.info(f"Stopping instance: {instance_id}")
-        # ec2.stop_instances(InstanceIds=[instance_id])
-        # logger.info(f"Instance stopped: {instance_id}")
-        response_msg = f"Instance already running: {instance_id}"
+    if total_files > 2 and total_duration > 900:
+        desired_capacity = 2
     else:
-        logger.warning(f"Unsupported instance state: {current_state}")
-        # This happens at the startup and shutdown of an Instance
-        unsupported = True
-        while unsupported:
-            time.sleep(5)
-            # Check the current state of the instance
-            instance = ec2.describe_instances(InstanceIds=[instance_id])[
-                'Reservations'][0]['Instances'][0]
-            current_state = instance['State']['Name']
-            if current_state == 'stopped':
-                logger.info(f"Starting instance: {instance_id}")
-                ec2.start_instances(InstanceIds=[instance_id])
-                logger.info(f"Instance started: {instance_id}")
-                response_msg = f"Instance started: {instance_id}"
-                break
-            elif current_state == 'running':
-                response_msg = f"Instance already running: {instance_id}"
-                break
-            else:
-                logger.warning("Unsupported instance state. Trying again")
+        desired_capacity = 1
 
-    logger.info(f"Current instance state: {current_state}")
+    # Only allow to scale up. Scaling down is handled by stop_lambda.
+    if desired_capacity > current_desired_capacity:
+        response = client.update_auto_scaling_group(AutoScalingGroupName=group, DesiredCapacity=desired_capacity)
+        logger.info(f"EC2 Upscaling. Response: {response}")
+        return {'statusCode': 200, 'body': json.dumps(response)}
 
-    response += response_msg
+    logger.info("Auto Scaling Group already at desired capacity.")
+    return {'statusCode': 200, 'body': json.dumps({"response": "Auto Scaling Group already at desired capacity"})}
 
-    return {'statusCode': 200, 'body': json.dumps(response)}
+
+def get_current_desired_capacity(group_name):
+    response = client.describe_auto_scaling_groups(
+        AutoScalingGroupNames=[group_name],
+    )
+    return response["AutoScalingGroups"][0]["DesiredCapacity"]
