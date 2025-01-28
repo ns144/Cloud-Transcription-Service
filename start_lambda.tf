@@ -24,7 +24,7 @@ resource "aws_lambda_function" "start_lambda" {
 
   environment {
     variables = {
-        INSTANCE_ID = aws_instance.transcription_server.id
+        ASG_NAME = aws_autoscaling_group.transcription_servers.name
         SECRET = var.transcription_api_key
     }
   }
