@@ -24,7 +24,8 @@ resource "aws_lambda_function" "start_lambda" {
 
   environment {
     variables = {
-        INSTANCE_ID = aws_instance.transcription_server.id
+        #INSTANCE_ID = aws_instance.transcription_server.id
+        ASG_ID = aws_autoscaling_group.ton-texter-transcription-servers.name
         SECRET = var.transcription_api_key
     }
   }
@@ -32,8 +33,8 @@ resource "aws_lambda_function" "start_lambda" {
   timeout = 60
 }
 
-output "instance_id" {
-  value = aws_instance.transcription_server.id
+output "name" {
+  value = aws_autoscaling_group.ton-texter-transcription-servers.name
 }
 
 resource "aws_iam_role" "lambda_role" {
