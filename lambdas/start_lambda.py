@@ -3,6 +3,7 @@ import base64
 import boto3
 import os
 import logging
+import math
 
 client = boto3.client('autoscaling')
 
@@ -49,10 +50,15 @@ def lambda_handler(event, context):
 
     current_desired_capacity = get_current_desired_capacity(group)
 
-    if total_files > 2 and total_duration > 900:
-        desired_capacity = 2
-    else:
-        desired_capacity = 1
+    duration_desired = math.ceil(total_duration / 900)
+    files_desired = total_files
+
+    desired_capacity = min(duration_desired, files_desired)
+
+    # if total_files > 2 and total_duration > 900:
+    #    desired_capacity = 2
+    # else:
+    #    desired_capacity = 1
 
     # Only allow to scale up. Scaling down is handled by stop_lambda.
     if desired_capacity > current_desired_capacity:
