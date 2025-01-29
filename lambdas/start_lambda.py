@@ -48,18 +48,16 @@ def lambda_handler(event, context):
 
     group = os.environ['ASG_NAME']
 
-    current_desired_capacity = get_current_desired_capacity(group)
+    current_desired_capacity, current_max_size = get_current_asg_info(group)
 
     duration_desired = math.ceil(total_duration / 900)
     files_desired = total_files
 
-    desired_capacity = min(duration_desired, files_desired)
     new_desired_capacity = min(duration_desired, files_desired)
 
-    # if total_files > 2 and total_duration > 900:
-    #    desired_capacity = 2
-    # else:
-    #    desired_capacity = 1
+    # Do not allow to scale up beyond the max size of the ASG
+    if new_desired_capacity > current_max_size:
+        new_desired_capacity = current_max_size
 
     # Only allow to scale up. Scaling down is handled by stop_lambda.
     if new_desired_capacity > current_desired_capacity:
@@ -71,8 +69,8 @@ def lambda_handler(event, context):
     return {'statusCode': 200, 'body': json.dumps({"response": "Auto Scaling Group already at desired capacity"})}
 
 
-def get_current_desired_capacity(group_name):
+def get_current_asg_info(group_name):
     response = client.describe_auto_scaling_groups(
         AutoScalingGroupNames=[group_name],
     )
-    return response["AutoScalingGroups"][0]["DesiredCapacity"]
+    return (response["AutoScalingGroups"][0]["DesiredCapacity"], response["AutoScalingGroups"][0]["MaxSize"])
