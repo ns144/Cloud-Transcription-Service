@@ -54,6 +54,7 @@ def lambda_handler(event, context):
     files_desired = total_files
 
     desired_capacity = min(duration_desired, files_desired)
+    new_desired_capacity = min(duration_desired, files_desired)
 
     # if total_files > 2 and total_duration > 900:
     #    desired_capacity = 2
@@ -61,8 +62,8 @@ def lambda_handler(event, context):
     #    desired_capacity = 1
 
     # Only allow to scale up. Scaling down is handled by stop_lambda.
-    if desired_capacity > current_desired_capacity:
-        response = client.update_auto_scaling_group(AutoScalingGroupName=group, DesiredCapacity=desired_capacity)
+    if new_desired_capacity > current_desired_capacity:
+        response = client.update_auto_scaling_group(AutoScalingGroupName=group, DesiredCapacity=new_desired_capacity)
         logger.info(f"EC2 Upscaling. Response: {response}")
         return {'statusCode': 200, 'body': json.dumps(response)}
 
