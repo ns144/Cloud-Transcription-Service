@@ -3,6 +3,7 @@ import base64
 import boto3
 import os
 import logging
+import requests
 
 # Create logger
 logger = logging.getLogger()
@@ -41,5 +42,15 @@ def lambda_handler(event, context):
         ShouldDecrementDesiredCapacity=True)
 
     logger.info(f"EC2 Shutdown. Response: {response}")
+
+    # Run health check when scaling down to zero
+    response = client.describe_auto_scaling_groups(
+        AutoScalingGroupNames=[os.environ['ASG_NAME']])
+    desired_capacity = response['AutoScalingGroups'][0]['DesiredCapacity']
+    if desired_capacity == 0:
+        logger.info("Scaled down to zero. Running health check.")
+        requests.get(f"https://ton-texter.de/api/transcript/health-check?key={transcription_key}")
+        if response.status_code != 200:
+            logger.warning("Health check is not reachable.")
 
     return {'statusCode': 200, 'body': json.dumps(response)}
