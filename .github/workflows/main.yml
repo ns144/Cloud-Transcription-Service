@@ -118,6 +118,7 @@ jobs:
         uses: actions/setup-java@v4.7.0
         with:
           java-version: '17'
+          distribution: 'adopt'
 
       - name: Install JMeter
         run: |
