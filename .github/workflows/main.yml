@@ -103,3 +103,31 @@ jobs:
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve -input=false
+
+  jmeter-test:
+    needs: deploy
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Install JMeter
+        run: |
+          sudo apt update
+          sudo apt install -y jmeter
+
+      - name: Run JMeter Test
+        id: jmeter
+        run: |
+          jmeter -n -t jmeter-tests/Ton-Texter_quick_test.jmx -l results.jtl \
+          -JUSERNAME=${{ secrets.JMETER_USERNAME }} \
+          -JPASSWORD=${{ secrets.JMETER_PASSWORD }}
+          if grep -q "JMeter test failed: Transcription did not finish in time." results.jtl; then
+            echo "JMeter test failed!"
+            exit 1
+          else
+            echo "JMeter test passed!"
+          fi
