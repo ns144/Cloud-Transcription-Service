@@ -1,0 +1,3 @@
+[submodule "jmeter-tests"]
+	path = jmeter-tests
+	url = https://github.com/hanneskoksch/Ton-Texter-JMeter-Tests.git
